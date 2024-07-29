@@ -1,0 +1,27 @@
+FATFS FatFs;    // FatFs work area needed for each volume
+FIL fil;        // File object needed for each open file
+FRESULT res;    // FatFs function common result code
+char buffer[100];
+UINT bw;        // File write count
+
+// Mount the file system
+res = f_mount(&FatFs, "", 1);
+if (res != FR_OK) {
+    // Handle error
+}
+
+// Open a file
+res = f_open(&fil, "data.txt", FA_WRITE | FA_CREATE_ALWAYS);
+if (res != FR_OK) {
+    // Handle error
+}
+
+// Write sensor data to file
+sprintf(buffer, "Sensor Data: %d\r\n", sensor_data);
+res = f_write(&fil, buffer, strlen(buffer), &bw);
+if (res != FR_OK) {
+    // Handle error
+}
+
+// Close the file
+f_close(&fil);
